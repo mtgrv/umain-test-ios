@@ -9,43 +9,33 @@ import SwiftUI
 
 struct RestaurantsListView: View {
     
-    @State private var restaurants: [Restaurant] = []
+    @State private var dataManager = DataManager()
     
     var body: some View {
         
         NavigationView {
             
-            List(restaurants) { restaurant in
+            if dataManager.isLoading {
                 
-                NavigationLink {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            else {
+                List(dataManager.restaurants) { restaurant in
                     
-                    RestaurantDetailView(restaurant: restaurant)
-                } label: {
-                    
-                    RestaurantCardView(restaurant: restaurant)
+                    NavigationLink {
+                        
+                        RestaurantDetailView(restaurant: restaurant)
+                    } label: {
+                        
+                        RestaurantCardView(restaurant: restaurant)
+                    }
                 }
             }
         }
         .task {
-            restaurants = (try? await fetchRestaurants()) ?? []
+            await dataManager.fetchData()
         }
-    }
-    
-    private func fetchRestaurants() async throws -> [Restaurant]? {
-        
-        let url = URL(string: "https://food-delivery.umain.io/api/v1/restaurants")!
-        
-        let (data, _) = try await URLSession.shared.data(from: url)
-        
-        let decoder = JSONDecoder()
-        let response = try? decoder.decode(RestaurantsResponse.self, from: data)
-        
-        return response?.restaurants
-    }
-    
-    struct RestaurantsResponse: Decodable {
-        
-        let restaurants: [Restaurant]
     }
 }
 

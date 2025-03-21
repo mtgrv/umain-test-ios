@@ -37,9 +37,9 @@ struct RestaurantCardView: View {
                     .fontWeight(.bold)
             }
             
-            if !restaurant.filterIds.isEmpty {
+            if let filtersDescription = restaurant.filtersDescription {
                 
-                Text(restaurant.filterIds.joined(separator: " · "))
+                Text(filtersDescription)
                     .foregroundStyle(.secondary)
                     .font(.callout.bold())
             }
