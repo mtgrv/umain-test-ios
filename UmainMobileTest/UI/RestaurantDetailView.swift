@@ -18,9 +18,6 @@ struct RestaurantDetailView: View {
 
 #Preview {
     NavigationView {
-        RestaurantDetailView(
-            restaurant: .init(id: "", name: "Restaurant name", rating: 2,
-                              filterIds: [], image_url: URL(string: "https://")!, delivery_time_minutes: 30)
-        )
+        RestaurantDetailView(restaurant: Restaurant.Mock.emiliasRestaurant)
     }
 }
