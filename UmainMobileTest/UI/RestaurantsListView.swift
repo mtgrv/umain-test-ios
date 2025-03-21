@@ -13,9 +13,18 @@ struct RestaurantsListView: View {
     
     var body: some View {
         
-        List(restaurants) { restaurant in
+        NavigationView {
             
-            Text(restaurant.name)
+            List(restaurants) { restaurant in
+                
+                NavigationLink {
+                    
+                    RestaurantDetailView(restaurant: restaurant)
+                } label: {
+                    
+                    Text(restaurant.name)
+                }
+            }
         }
         .task {
             restaurants = (try? await fetchRestaurants()) ?? []
