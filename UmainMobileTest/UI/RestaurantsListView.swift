@@ -9,10 +9,10 @@ import SwiftUI
 
 struct RestaurantsListView: View {
     
-    @State private var dataManager = DataManager()
+    @Bindable private var dataManager = DataManager()
     
     var body: some View {
-        
+                
         NavigationView {
             
             if dataManager.isLoading {
@@ -21,20 +21,53 @@ struct RestaurantsListView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             else {
-                List(dataManager.restaurants) { restaurant in
+                VStack {
                     
-                    NavigationLink {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach($dataManager.filters) { $filter in
+                                FilterToggleView(filter: $filter)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    .scrollIndicators(.hidden)
+                    
+                    List(filteredRestaurants) { restaurant in
                         
-                        RestaurantDetailView(restaurant: restaurant)
-                    } label: {
-                        
-                        RestaurantCardView(restaurant: restaurant)
+                        NavigationLink {
+                            
+                            RestaurantDetailView(restaurant: restaurant)
+                        } label: {
+                            
+                            RestaurantCardView(restaurant: restaurant)
+                        }
                     }
                 }
             }
         }
         .task {
             await dataManager.fetchData()
+        }
+    }
+    
+    private var filteredRestaurants: [Restaurant] {
+        
+        let activeFilters = dataManager.filters.filter(\.isEnabled).map(\.id)
+        
+        guard !activeFilters.isEmpty else {
+            return dataManager.restaurants
+        }
+                
+        return dataManager.restaurants.filter { restaurant in
+            
+            for id in activeFilters {
+                guard restaurant.filterIds.contains(id) else {
+                    return false
+                }
+            }
+            
+            return true
         }
     }
 }

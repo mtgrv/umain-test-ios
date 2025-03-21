@@ -11,6 +11,7 @@ import Foundation
 class DataManager {
     
     var restaurants: [Restaurant] = []
+    var filters: [Filter] = []
     var isLoading: Bool = false
     
     // MARK: - APIs
@@ -37,12 +38,15 @@ class DataManager {
             let tempFiltersIds = restaurants.map { restaurant in
                 restaurant.filterIds
             }.reduce([], +)
-            
             // remove duplicates
             let filtersIds = Set(tempFiltersIds)
-            
-            // get filters data as dictionary with id as keys
-            let filtersDictionary = try await fetchFiltersData(for: filtersIds)
+            // get filters data and save
+            self.filters = try await fetchFiltersData(for: filtersIds)
+            // convert data in form of dictionary with id as keys
+            var filtersDictionary = [String:Filter]()
+            for filter in filters {
+                filtersDictionary[filter.id] = filter
+            }
             
             //populate filters property for every restaurant
             var restaurantsWithFilters: [Restaurant] = []
@@ -60,9 +64,9 @@ class DataManager {
     }
     
     /// fetch filters data and returns them in form of dictionary with id as key
-    private func fetchFiltersData(for ids: some Collection<String>) async throws -> [String:Filter] {
+    private func fetchFiltersData(for ids: some Collection<String>) async throws -> [Filter] {
         
-        try await withThrowingTaskGroup(of: Filter.self, returning: [String:Filter].self) { taskGroup in
+        try await withThrowingTaskGroup(of: Filter.self, returning: [Filter].self) { taskGroup in
             
             for id in ids {
                 
@@ -76,14 +80,8 @@ class DataManager {
             for try await filter in taskGroup {
                 filters.append(filter)
             }
-            
-            var dict = [String:Filter]()
-            for filter in filters {
-                dict[filter.id] = filter
-            }
-            return dict
+            return filters
         }
-        
     }
     
     private func fetchFilter(for id: String) async throws -> Filter {
