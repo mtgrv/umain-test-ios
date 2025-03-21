@@ -22,7 +22,7 @@ struct RestaurantsListView: View {
                     RestaurantDetailView(restaurant: restaurant)
                 } label: {
                     
-                    Text(restaurant.name)
+                    RestaurantCardView(restaurant: restaurant)
                 }
             }
         }
