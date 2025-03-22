@@ -14,25 +14,18 @@ class DataManager {
     var filters: [Filter] = []
     var isLoading: Bool = false
     
-    // MARK: - APIs
+    private var apiManager: APIManager
     
-    private let apiBaseUrl = URL(string: "https://food-delivery.umain.io/api/v1/")!
+    init(apiManager: APIManager = APIManager()) {
+        self.apiManager = apiManager
+    }
     
     func fetchData() async {
         
         isLoading = true
-        
-        let url = apiBaseUrl.appending(component: "restaurants")
-        
+                
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                return
-            }
-            
-            let restaurantResponse = try JSONDecoder().decode(RestaurantsResponse.self, from: data)
-            let restaurants = restaurantResponse.restaurants
+            let restaurants = try await apiManager.fetchRestaurants()
             
             // Populate filter ids
             let tempFiltersIds = restaurants.map { restaurant in
@@ -41,7 +34,7 @@ class DataManager {
             // remove duplicates
             let filtersIds = Set(tempFiltersIds)
             // get filters data and save
-            self.filters = try await fetchFiltersData(for: filtersIds)
+            self.filters = try await apiManager.fetchFilters(for: filtersIds)
             // convert data in form of dictionary with id as keys
             var filtersDictionary = [String:Filter]()
             for filter in filters {
@@ -61,54 +54,5 @@ class DataManager {
             print(error.localizedDescription)
             isLoading = false
         }
-    }
-    
-    /// fetch filters data and returns them in form of dictionary with id as key
-    private func fetchFiltersData(for ids: some Collection<String>) async throws -> [Filter] {
-        
-        try await withThrowingTaskGroup(of: Filter.self, returning: [Filter].self) { taskGroup in
-            
-            for id in ids {
-                
-                taskGroup.addTask {
-                    try await self.fetchFilter(for: id)
-                }
-            }
-            
-            var filters = [Filter]()
-            
-            for try await filter in taskGroup {
-                filters.append(filter)
-            }
-            return filters
-        }
-    }
-    
-    private func fetchFilter(for id: String) async throws -> Filter {
-        
-        let url = apiBaseUrl.appending(component: "filter/\(id)")
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            
-            let error = try JSONDecoder().decode(ResponseError.self, from: data)
-            throw error
-        }
-        
-        return try JSONDecoder().decode(Filter.self, from: data)
-    }
-        
-    // MARK: API Model
-    
-    private struct RestaurantsResponse: Decodable {
-        
-        let restaurants: [Restaurant]
-    }
-    
-    private struct ResponseError: Decodable, Error {
-
-        let error: Bool
-        let reason: String
     }
 }
