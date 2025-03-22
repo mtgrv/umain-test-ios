@@ -37,7 +37,7 @@ struct FilterToggleView: View {
 
 #Preview {
     
-    @Previewable @State var filter = Filter.Mock.tpoRatedFilter
+    @Previewable @State var filter = Filter.Mock.topRated
     Color.secondary.opacity(0.5).ignoresSafeArea()
         .overlay(
             FilterToggleView(filter: $filter)
