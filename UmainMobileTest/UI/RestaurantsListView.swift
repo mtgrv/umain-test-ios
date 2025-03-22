@@ -15,30 +15,47 @@ struct RestaurantsListView: View {
                 
         NavigationView {
             
-            if dataManager.isLoading {
+            ZStack {
                 
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-            else {
-                VStack {
+                if dataManager.isLoading {
                     
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach($dataManager.filters) { $filter in
-                                FilterToggleView(filter: $filter)
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                else {
+                
+                    ScrollView {
+                        LazyVStack(spacing: 20) {
+                            
+                            Spacer(minLength: 60)
+                            
+                            ForEach(filteredRestaurants) { restaurant in
+                                
+                                RestaurantsListItemView(restaurant: restaurant, dataManager: dataManager)
                             }
                         }
-                        .padding(.horizontal)
+                        .padding()
                     }
                     .scrollIndicators(.hidden)
                     
-                    List(filteredRestaurants) { restaurant in
-                        
-                        RestaurantsListItemView(restaurant: restaurant, dataManager: dataManager)
+                    VStack {
+                        ScrollView(.horizontal) {
+                            LazyHStack {
+                                
+                                ForEach($dataManager.filters) { $filter in
+                                    FilterToggleView(filter: $filter)
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        .scrollIndicators(.hidden)
+                        .frame(height: 60)
+
+                        Spacer()
                     }
                 }
             }
+            .background(Color.background)
         }
         .task {
             await dataManager.fetchData()
