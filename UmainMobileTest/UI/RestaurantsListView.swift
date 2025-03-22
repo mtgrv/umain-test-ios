@@ -35,13 +35,7 @@ struct RestaurantsListView: View {
                     
                     List(filteredRestaurants) { restaurant in
                         
-                        NavigationLink {
-                            
-                            RestaurantDetailView(restaurant: restaurant, dataManager: dataManager)
-                        } label: {
-                            
-                            RestaurantCardView(restaurant: restaurant)
-                        }
+                        RestaurantsListItemView(restaurant: restaurant, dataManager: dataManager)
                     }
                 }
             }

@@ -18,19 +18,20 @@ struct RestaurantDetailView: View {
     var body: some View {
         
         ZStack(alignment: .top) {
-            
-            VStack {
-                
-                if let image {
-                    Image(uiImage: image)
-                        .resizable().scaledToFill()
-                        .frame(height: 300)
-                        .clipped()
-                }
-                
-                Spacer()
-            }
-            .ignoresSafeArea()
+             
+            Color(uiColor: .systemBackground)
+                .overlay(
+                    VStack {
+                        
+                        if let image {
+                            Image(uiImage: image)
+                                .resizable().scaledToFill()
+                                .frame(height: 260)
+                                .clipped()
+                        }
+                        Spacer()
+                    }
+                )
             
             VStack(alignment: .leading, spacing: 20) {
                 
@@ -55,13 +56,13 @@ struct RestaurantDetailView: View {
                 }
             }
             .padding(20)
-            .frame(maxWidth: .infinity)
             .background()
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .padding(.horizontal, 20)
-            .padding(.top, 180)
+            .padding(.top, 200)
             .shadow(radius: 10, y: 6)
         }
+        .ignoresSafeArea()
         .task {
             self.isOpen = await dataManager.isRestaurantOpen(restaurant)
         }

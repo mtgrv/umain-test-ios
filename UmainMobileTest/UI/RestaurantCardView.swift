@@ -10,16 +10,20 @@ import SwiftUI
 struct RestaurantCardView: View {
     
     var restaurant: Restaurant
+    @Binding var image: UIImage?
     
     var body: some View {
         
         VStack(alignment: .leading) {
             
-            AsyncImage(url: restaurant.image_url) { image in
-                image
-                    .resizable().scaledToFill()
-            } placeholder: {
-                ProgressView()
+            ZStack {
+                if let image {
+                    Image(uiImage: image)
+                        .resizable().scaledToFill()
+                } else {
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
             }
             .frame(height: 100)
             .clipped()
@@ -52,12 +56,27 @@ struct RestaurantCardView: View {
                     .font(.caption)
             }
         }
-        
         .clipped()
+        .task {
+            self.image = await fetchImage()
+        }
+    }
+    
+    private func fetchImage() async -> UIImage? {
+        
+        guard let (data, response) = try? await URLSession.shared.data(from: restaurant.image_url) else {
+            return nil
+        }
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            return nil
+        }
+        
+        return UIImage(data: data)
     }
 }
 
 #Preview {
-    RestaurantCardView(restaurant: Restaurant.Mock.emiliasRestaurant)
+    RestaurantCardView(restaurant: Restaurant.Mock.emiliasRestaurant, image: .constant(nil))
         .padding()
 }
