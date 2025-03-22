@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct UmainMobileTestApp: App {
+    
     var body: some Scene {
+        
         WindowGroup {
-            RestaurantsListView()
+            
+            MainView()
         }
     }
 }
