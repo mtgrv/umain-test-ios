@@ -13,13 +13,15 @@ struct RestaurantDetailView: View {
     var image: UIImage?
     var dataManager: DataManager
     
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var isOpen: Bool?
 
     var body: some View {
         
         ZStack(alignment: .top) {
              
-            Color(uiColor: .systemBackground)
+            Color.background
                 .overlay(
                     VStack {
                         
@@ -37,12 +39,13 @@ struct RestaurantDetailView: View {
                 
                 Text(restaurant.name)
                     .font(.title)
+                    .foregroundStyle(.darkText)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 if let filtersDescription = restaurant.filtersDescription {
                     
                     Text(filtersDescription)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.subtitle)
                         .font(.title3)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -50,6 +53,7 @@ struct RestaurantDetailView: View {
                 if let isOpen {
                     Text(isOpen ? "Open" : "Closed")
                         .font(.title2)
+                        .foregroundStyle(isOpen ? .positive : .negative)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
                     ProgressView()
@@ -63,8 +67,29 @@ struct RestaurantDetailView: View {
             .shadow(radius: 10, y: 6)
         }
         .ignoresSafeArea()
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.backward")
+                        .resizable().scaledToFit()
+                        .foregroundStyle(.accent)
+                        .padding(10)
+                        .frame(width: 40)
+                        .background(
+                            Circle().fill(.white)
+                                .opacity(0.9)
+                        )
+                }
+            }
+        }
         .task {
-            self.isOpen = await dataManager.isRestaurantOpen(restaurant)
+            let isOpen = await dataManager.isRestaurantOpen(restaurant)
+            withAnimation {
+                self.isOpen = isOpen
+            }
         }
     }
 }
