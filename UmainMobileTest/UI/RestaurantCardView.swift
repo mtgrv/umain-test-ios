@@ -14,7 +14,7 @@ struct RestaurantCardView: View {
     
     var body: some View {
         
-        VStack(alignment: .leading) {
+        VStack(spacing: 0) {
             
             ZStack {
                 if let image {
@@ -25,42 +25,69 @@ struct RestaurantCardView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-            .frame(height: 100)
+            .frame(height: 160)
             .clipped()
             
-            HStack {
+            VStack(alignment: .leading) {
                 
-                Text(restaurant.name)
+                HStack {
+                    
+                    Text(restaurant.name)
+                        .foregroundStyle(.darkText)
+                        .font(.title2)
+                    
+                    Spacer()
+                    
+                    HStack(spacing: 3) {
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(.yellow)
+                        
+                        
+                        if let rating = formatter.string(from: restaurant.rating as NSNumber) {
+                            Text(rating)
+                                .foregroundStyle(.darkText)
+                                .fontWeight(.bold)
+                        }
+                    }
+                    .font(.footnote)
+                }
                 
-                Spacer()
+                if let filtersDescription = restaurant.filtersDescription {
+                    
+                    Text(filtersDescription)
+                        .foregroundStyle(.subtitle)
+                        .font(.callout.bold())
+                }
                 
-                Image(systemName: "star.fill")
-                    .foregroundStyle(.yellow)
-                Text("\(restaurant.rating)")
-                    .font(.caption)
-                    .fontWeight(.bold)
+                HStack(spacing: 4) {
+                    
+                    Image(systemName: "clock")
+                        .foregroundStyle(.red)
+                    Text("\(restaurant.delivery_time_minutes) min")
+                        .foregroundStyle(.darkText)
+                }
+                .font(.footnote)
             }
-            
-            if let filtersDescription = restaurant.filtersDescription {
-                
-                Text(filtersDescription)
-                    .foregroundStyle(.secondary)
-                    .font(.callout.bold())
-            }
-            
-            HStack(spacing: 4) {
-                
-                Image(systemName: "clock")
-                    .foregroundStyle(.red)
-                Text("\(restaurant.delivery_time_minutes)")
-                    .font(.caption)
-            }
+            .padding(10)
         }
-        .clipped()
+        .background(.white)
+        .clipShape(
+            UnevenRoundedRectangle(cornerRadii: .init(topLeading: 16, topTrailing: 16))
+        )
+        .shadow(radius: 10, y: 6)
         .task {
             self.image = await fetchImage()
         }
     }
+    
+    private let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 1
+        formatter.maximumFractionDigits = 1
+        formatter.decimalSeparator = "."
+        return formatter
+    }()
     
     private func fetchImage() async -> UIImage? {
         
@@ -77,6 +104,12 @@ struct RestaurantCardView: View {
 }
 
 #Preview {
-    RestaurantCardView(restaurant: Restaurant.Mock.emiliasRestaurant, image: .constant(nil))
-        .padding()
+    @Previewable @State var image: UIImage?
+    
+    Color.background
+        .overlay(
+            RestaurantCardView(restaurant: Restaurant.Mock.emiliasRestaurant, image: $image)
+                .padding()
+        )
+    
 }
