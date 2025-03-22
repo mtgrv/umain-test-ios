@@ -14,7 +14,9 @@ struct FilterToggleView: View {
     var body: some View {
         
         Button {
-            filter.isEnabled.toggle()
+            withAnimation {
+                filter.isEnabled.toggle()
+            }
         } label: {
             HStack {
                 
@@ -23,14 +25,15 @@ struct FilterToggleView: View {
                 } placeholder: {
                     ProgressView()
                 }
-                .frame(width: 70, height: 70)
                 .clipShape(Circle())
                 
                 Text(filter.name)
+                    .font(.headline)
+                    .foregroundColor(filter.isEnabled ? .lightText : .darkText)
             }
         }
         .padding(.trailing, 20)
-        .background(filter.isEnabled ? Color(uiColor: .label) : Color(uiColor: .systemBackground))
+        .background(filter.isEnabled ? .accent : .white)
         .clipShape(Capsule())
     }
 }
@@ -41,5 +44,6 @@ struct FilterToggleView: View {
     Color.secondary.opacity(0.5).ignoresSafeArea()
         .overlay(
             FilterToggleView(filter: $filter)
+                .frame(width: 200, height: 50)
         )
 }
