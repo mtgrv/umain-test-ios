@@ -55,4 +55,14 @@ class DataManager {
             isLoading = false
         }
     }
+    
+    func isRestaurantOpen(_ restaurant: Restaurant) async -> Bool {
+                        
+        do {
+            return try await apiManager.fetchOpenStatus(for: restaurant)
+        } catch {
+            print(error.localizedDescription)
+            return false
+        }
+    }
 }

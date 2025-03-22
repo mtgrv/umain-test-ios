@@ -51,6 +51,22 @@ class APIManager {
         }
     }
     
+    func fetchOpenStatus(for restaurant: Restaurant) async throws -> Bool {
+        
+        let url = apiBaseUrl.appending(component: "open/\(restaurant.id)")
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            
+            let error = try JSONDecoder().decode(ResponseError.self, from: data)
+            throw error
+        }
+        
+        let status = try JSONDecoder().decode(Restaurant.OpenStatus.self, from: data)
+        return status.is_currently_open
+    }
+    
     private func fetchFilter(for id: String) async throws -> Filter {
         
         let url = apiBaseUrl.appending(component: "filter/\(id)")

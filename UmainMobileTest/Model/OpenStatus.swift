@@ -7,8 +7,11 @@
 
 import Foundation
 
-struct OpenStatus: Decodable {
+extension Restaurant {
     
-    let restaurant_id: String
-    let is_currently_open: Bool
+    struct OpenStatus: Decodable {
+        
+        let restaurant_id: String
+        let is_currently_open: Bool
+    }
 }
