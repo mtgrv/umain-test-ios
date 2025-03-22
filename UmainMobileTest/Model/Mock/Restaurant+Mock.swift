@@ -19,7 +19,11 @@ extension Restaurant {
                 "123456789", "789456123"
             ],
             image_url: URL(string: "https://picsum.photos/500/200")!,
-            delivery_time_minutes: 30
+            delivery_time_minutes: 30,
+            filters: [
+                .init(id: "123456789", name: "Take-Out", image_url: URL(string:"https://picsum.photos/100/100")!),
+                .init(id: "789456123", name: "Fast Delivery", image_url: URL(string: "https://picsum.photos/100/100")!)
+            ]
         )
     }
 }

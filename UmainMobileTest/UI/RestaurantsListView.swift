@@ -37,7 +37,7 @@ struct RestaurantsListView: View {
                         
                         NavigationLink {
                             
-                            RestaurantDetailView(restaurant: restaurant)
+                            RestaurantDetailView(restaurant: restaurant, dataManager: dataManager)
                         } label: {
                             
                             RestaurantCardView(restaurant: restaurant)
