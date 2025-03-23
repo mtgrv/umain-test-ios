@@ -10,6 +10,7 @@ import SwiftUI
 struct FiltersView: View {
     
     @Binding var filters: [Filter]
+    var height: CGFloat
     
     var body: some View {
         
@@ -20,7 +21,9 @@ struct FiltersView: View {
                     FilterToggleView(filter: $filter)
                 }
             }
+            .frame(height: height)
             .padding(.horizontal)
+            .padding(.bottom, 20)
         }
         .scrollIndicators(.hidden)
     }
@@ -29,6 +32,5 @@ struct FiltersView: View {
 #Preview {
     @Previewable @State var filters = [Filter.Mock.eatIn, Filter.Mock.topRated]
     
-    FiltersView(filters: $filters)
-        .frame(height: 60)
+    FiltersView(filters: $filters, height: 60)
 }

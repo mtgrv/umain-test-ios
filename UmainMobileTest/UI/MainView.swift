@@ -30,9 +30,8 @@ struct MainView: View {
                     
                     VStack {
                         
-                        FiltersView(filters: $dataManager.filters)
-                            .frame(height: topSpacing)
-
+                        FiltersView(filters: $dataManager.filters, height: topSpacing)
+                        
                         Spacer()
                     }
                 }

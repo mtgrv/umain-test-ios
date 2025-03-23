@@ -35,6 +35,7 @@ struct FilterToggleView: View {
         .padding(.trailing, 20)
         .background(filter.isEnabled ? .accent : .white)
         .clipShape(Capsule())
+        .shadow(radius: 5, y: 6)
     }
 }
 
