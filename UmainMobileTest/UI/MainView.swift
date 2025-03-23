@@ -37,6 +37,14 @@ struct MainView: View {
                 }
             }
             .background(Color.background)
+            .toolbarBackgroundVisibility(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Image("umainLogo")
+                        .resizable().scaledToFit()
+                        .frame(height: 64)
+                }
+            }
         }
         .task {
             await dataManager.fetchData()

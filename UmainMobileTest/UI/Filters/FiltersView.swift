@@ -23,7 +23,7 @@ struct FiltersView: View {
             }
             .frame(height: height)
             .padding(.horizontal)
-            .padding(.bottom, 10)
+            .padding(.vertical, 15)
         }
         .scrollIndicators(.hidden)
     }
