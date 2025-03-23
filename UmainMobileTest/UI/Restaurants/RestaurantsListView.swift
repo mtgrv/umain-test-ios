@@ -54,7 +54,7 @@ struct RestaurantsListView: View {
     
     @Previewable @State var dataManager = DataManager()
     
-    NavigationView {
+    NavigationStack {
         RestaurantsListView(dataManager: dataManager, topSpacing: 0)
     }
     .task {

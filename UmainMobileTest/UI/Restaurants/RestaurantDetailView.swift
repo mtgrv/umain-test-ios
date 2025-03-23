@@ -95,7 +95,7 @@ struct RestaurantDetailView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         RestaurantDetailView(restaurant: Restaurant.Mock.emiliasRestaurant,
                              image: UIImage(systemName: "photo.artframe"),
                              dataManager: DataManager())
