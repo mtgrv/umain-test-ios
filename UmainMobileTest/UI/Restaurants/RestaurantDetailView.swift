@@ -64,7 +64,7 @@ struct RestaurantDetailView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .padding(.horizontal, 20)
             .padding(.top, 200)
-            .shadow(radius: 10, y: 6)
+            .customShadow()
         }
         .ignoresSafeArea()
         .navigationBarBackButtonHidden()

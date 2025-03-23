@@ -74,7 +74,7 @@ struct RestaurantCardView: View {
         .clipShape(
             UnevenRoundedRectangle(cornerRadii: .init(topLeading: 16, topTrailing: 16))
         )
-        .shadow(radius: 10, y: 6)
+        .customShadow()
         .task {
             self.image = await fetchImage()
         }
