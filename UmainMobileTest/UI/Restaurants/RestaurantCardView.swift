@@ -28,13 +28,13 @@ struct RestaurantCardView: View {
             .frame(height: 160)
             .clipped()
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 2) {
                 
                 HStack {
                     
                     Text(restaurant.name)
                         .foregroundStyle(.darkText)
-                        .font(.title2)
+                        .font(.umain.title1)
                     
                     Spacer()
                     
@@ -46,17 +46,16 @@ struct RestaurantCardView: View {
                         if let rating = formatter.string(from: restaurant.rating as NSNumber) {
                             Text(rating)
                                 .foregroundStyle(.darkText)
-                                .fontWeight(.bold)
                         }
                     }
-                    .font(.footnote)
+                    .font(.umain.footer1.weight(.medium))
                 }
                 
                 if let filtersDescription = restaurant.filtersDescription {
                     
                     Text(filtersDescription)
                         .foregroundStyle(.subtitle)
-                        .font(.callout.bold())
+                        .font(.umain.subtitle1)
                 }
                 
                 HStack(spacing: 4) {
@@ -66,7 +65,7 @@ struct RestaurantCardView: View {
                     Text(restaurant.formattedDeliveryTime)
                         .foregroundStyle(.darkText)
                 }
-                .font(.footnote)
+                .font(.umain.footer1)
             }
             .padding(10)
             .multilineTextAlignment(.leading)

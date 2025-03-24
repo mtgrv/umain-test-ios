@@ -28,7 +28,7 @@ struct FilterToggleView: View {
                 .clipShape(Circle())
                 
                 Text(filter.name)
-                    .font(.headline)
+                    .font(.umain.title2)
                     .foregroundColor(filter.isEnabled ? .lightText : .darkText)
             }
         }

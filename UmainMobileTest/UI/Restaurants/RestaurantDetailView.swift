@@ -40,7 +40,7 @@ struct RestaurantDetailView: View {
             VStack(alignment: .leading, spacing: 20) {
                 
                 Text(restaurant.name)
-                    .font(.title)
+                    .font(.umain.headline1)
                     .foregroundStyle(.darkText)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -48,13 +48,13 @@ struct RestaurantDetailView: View {
                     
                     Text(filtersDescription)
                         .foregroundStyle(.subtitle)
-                        .font(.title3)
+                        .font(.umain.headline2)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 
                 if let isOpen {
                     Text(isOpen ? "Open" : "Closed")
-                        .font(.title2)
+                        .font(.umain.title1)
                         .foregroundStyle(isOpen ? .positive : .negative)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
