@@ -53,7 +53,7 @@ class APIManager {
     
     func fetchOpenStatus(for restaurant: Restaurant) async throws -> Bool {
         
-        let url = apiBaseUrl.appending(component: "opens/\(restaurant.id)")
+        let url = apiBaseUrl.appending(component: "open/\(restaurant.id)")
         
         let (data, response) = try await URLSession.shared.data(from: url)
         
