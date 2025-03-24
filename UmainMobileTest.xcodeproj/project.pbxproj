@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		95B9DE072D915CFA00FCB369 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 95B9DE032D915CFA00FCB369 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		953868722D8D8BE500715D1A /* UmainMobileTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UmainMobileTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		95B9DE032D915CFA00FCB369 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		953868692D8D8BE500715D1A = {
 			isa = PBXGroup;
 			children = (
+				95B9DE032D915CFA00FCB369 /* README.md */,
 				953868742D8D8BE500715D1A /* UmainMobileTest */,
 				953868732D8D8BE500715D1A /* Products */,
 			);
@@ -109,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95B9DE072D915CFA00FCB369 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
