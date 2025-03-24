@@ -20,7 +20,7 @@ class DataManager {
         self.apiManager = apiManager
     }
     
-    func fetchData() async {
+    func fetchData() async -> Result<Void, Error> {
         
         isLoading = true
                 
@@ -50,9 +50,10 @@ class DataManager {
             
             self.restaurants = restaurantsWithFilters
             isLoading = false
+            return .success(())
         } catch {
-            print(error.localizedDescription)
             isLoading = false
+            return .failure(error)
         }
     }
     

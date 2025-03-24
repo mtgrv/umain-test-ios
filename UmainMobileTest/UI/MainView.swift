@@ -10,6 +10,8 @@ import SwiftUI
 struct MainView: View {
     
     @Bindable private var dataManager = DataManager()
+    @State private var isErrorPresented = false
+    @State private var error: Error?
     
     var body: some View {
                 
@@ -47,7 +49,18 @@ struct MainView: View {
             }
         }
         .task {
-            await dataManager.fetchData()
+            let result = await dataManager.fetchData()
+            
+            if case let .failure(error) = result {
+                self.error = error
+                self.isErrorPresented = true
+            }
+        }
+        .alert("Error!", isPresented: $isErrorPresented, presenting: error) { _ in
+            Button("OK") { }
+        } message: { error in
+            let message = "Something went wrong: " + String(describing: error)
+            Text(message)
         }
     }
 }
