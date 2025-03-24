@@ -19,9 +19,20 @@ struct RestaurantsListView: View {
                 
                 Spacer(minLength: topSpacing)
                 
-                ForEach(filteredRestaurants) { restaurant in
+                if !filteredRestaurants.isEmpty {
+                    ForEach(filteredRestaurants) { restaurant in
+                        
+                        RestaurantsListItemView(restaurant: restaurant, dataManager: dataManager)
+                    }
+                }
+                
+                else {
                     
-                    RestaurantsListItemView(restaurant: restaurant, dataManager: dataManager)
+                    Text("Cannot find restaurants matching selected filters")
+                        .font(.umain.title1)
+                        .foregroundStyle(.subtitle)
+                        .multilineTextAlignment(.center)
+                        .padding()
                 }
             }
             .padding()
