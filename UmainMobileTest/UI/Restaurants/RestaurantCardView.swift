@@ -69,6 +69,7 @@ struct RestaurantCardView: View {
                 .font(.footnote)
             }
             .padding(10)
+            .multilineTextAlignment(.leading)
         }
         .background(.white)
         .clipShape(
