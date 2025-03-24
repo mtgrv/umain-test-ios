@@ -63,7 +63,7 @@ struct RestaurantCardView: View {
                     
                     Image(systemName: "clock")
                         .foregroundStyle(.red)
-                    Text("\(restaurant.delivery_time_minutes) min")
+                    Text(restaurant.formattedDeliveryTime)
                         .foregroundStyle(.darkText)
                 }
                 .font(.footnote)
