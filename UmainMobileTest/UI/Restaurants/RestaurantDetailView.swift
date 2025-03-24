@@ -16,7 +16,9 @@ struct RestaurantDetailView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var isOpen: Bool?
-
+    @State private var isErrorPresented = false
+    @State private var error: Error?
+    
     var body: some View {
         
         ZStack(alignment: .top) {
@@ -86,10 +88,24 @@ struct RestaurantDetailView: View {
             }
         }
         .task {
-            let isOpen = await dataManager.isRestaurantOpen(restaurant)
+            let result = await dataManager.isRestaurantOpen(restaurant)
+            
+            switch result {
+            case .success(let isOpen):
+                self.isOpen = isOpen
+            case .failure(let error):
+                self.error = error
+                self.isErrorPresented = true
+            }
             withAnimation {
                 self.isOpen = isOpen
             }
+        }
+        .alert("Error!", isPresented: $isErrorPresented, presenting: error) { _ in
+            Button("OK") { }
+        } message: { error in
+            let message = "Something went wrong: " + String(describing: error)
+            Text(message)
         }
     }
 }

@@ -56,13 +56,13 @@ class DataManager {
         }
     }
     
-    func isRestaurantOpen(_ restaurant: Restaurant) async -> Bool {
-                        
+    func isRestaurantOpen(_ restaurant: Restaurant) async -> Result<Bool, Error> {
+        
         do {
-            return try await apiManager.fetchOpenStatus(for: restaurant)
+            let isOpen = try await apiManager.fetchOpenStatus(for: restaurant)
+            return .success(isOpen)
         } catch {
-            print(error.localizedDescription)
-            return false
+            return .failure(error)
         }
     }
 }

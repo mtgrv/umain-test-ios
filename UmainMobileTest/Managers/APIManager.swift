@@ -53,7 +53,7 @@ class APIManager {
     
     func fetchOpenStatus(for restaurant: Restaurant) async throws -> Bool {
         
-        let url = apiBaseUrl.appending(component: "open/\(restaurant.id)")
+        let url = apiBaseUrl.appending(component: "opens/\(restaurant.id)")
         
         let (data, response) = try await URLSession.shared.data(from: url)
         
@@ -89,9 +89,13 @@ class APIManager {
         let restaurants: [Restaurant]
     }
     
-    private struct ResponseError: Decodable, Error {
+    private struct ResponseError: Decodable, Error, CustomStringConvertible {
 
         let error: Bool
         let reason: String
+        
+        var description: String {
+            reason
+        }
     }
 }
