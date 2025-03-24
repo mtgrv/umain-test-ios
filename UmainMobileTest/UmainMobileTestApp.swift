@@ -15,6 +15,7 @@ struct UmainMobileTestApp: App {
         WindowGroup {
             
             MainView()
+                .preferredColorScheme(.light)
         }
     }
 }
